@@ -112,6 +112,13 @@ font-weight:700; font-size:13px; padding:8px 10px; cursor:pointer; font-family:i
 background:var(--cardhi); border:1px solid var(--line); border-radius:12px; padding:10px 16px;
 font-size:14px; opacity:0; transition:opacity .2s; pointer-events:none;}
 .toast.on{opacity:1;}
+.cmd{background:#0c121c; border:1px solid var(--line); border-radius:10px; padding:10px; margin-top:10px;}
+.cmd .top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+.cmd .top b{font-size:14px;}
+.cmd code{display:block; margin-top:8px; font-size:12px; line-height:1.5; color:var(--bluehi); overflow-wrap:anywhere; -webkit-user-select:all; user-select:all;}
+.btn.sm{min-height:44px; padding:10px 14px; font-size:14px;}
+.steps{color:var(--muted); font-size:13px; line-height:1.6; margin:10px 0 0; padding-left:20px;}
+.boardwarn{font-size:12px; margin-top:8px; color:var(--muted);}
 @media (max-width:380px){ .row{grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
 .row .name{grid-column:1 / -1;} .row.head .name{display:none;} }
 </style>
@@ -181,9 +188,27 @@ font-size:14px; opacity:0; transition:opacity .2s; pointer-events:none;}
 <p class="small">Rate = spot × USD/INR, converted to 10 g or 1 kg, plus import duty (India: 15% since 13 May 2026 — 10% basic customs + 5% AIDC). 22K = 91.6% and 18K = 75% of 24K. Use the adjust boxes to match your local market (IBJA / bullion dealer).</p>
 </section>
 
-<section class="card slate">
-<h2>Shop display</h2>
-<p class="small" style="margin-top:4px">iPhone Safari can't send the display's Wi-Fi (UDP) commands, so this page only shows the rates. To push them to the display use <b>CHECK-GOLD-DISPLAY.bat</b> on the PC or the Android app <b>gold-rate-1.6-live</b> — both use these same numbers. Display rows: 1 = 24K, 2 = 22K, 3 = 18K, 4 = Silver/kg (max 1,99,999).</p>
+<section class="card amber" id="board">
+<h2>Send to board</h2>
+<p class="hint">Board rows: 1 = 24K · 2 = 22K · 3 = 18K · 4 = Silver/kg · 5 = your value below</p>
+<div class="cmd"><div class="top"><b>BUY rows</b><button class="btn amber sm" id="copyBuy">Copy BUY</button></div><code class="mono" id="cmdBuy">–</code></div>
+<div class="cmd"><div class="top"><b>SELL rows</b><button class="btn amber sm" id="copySell">Copy SELL</button></div><code class="mono" id="cmdSell">–</code></div>
+<div class="boardwarn" id="boardWarn"></div>
+<ol class="steps">
+<li>On the iPhone join the board Wi-Fi <b>Gold Rate Display</b>. This page keeps the last rates.</li>
+<li>Open a UDP sender app (for example UDPup or Packet Sender): host <b class="mono">192.168.4.1</b>, port <b class="mono">8888</b>, UDP.</li>
+<li>Tap <b>Copy BUY</b>, paste the text in the app and send. Then <b>Copy SELL</b>, paste and send.</li>
+<li>Switch the iPhone back to your normal Wi-Fi.</li>
+</ol>
+<div class="grid2" style="margin-top:12px">
+<label class="f">Row 5 BUY value<input id="row5buy" inputmode="numeric" type="text"></label>
+<label class="f">Row 5 SELL value<input id="row5sell" inputmode="numeric" type="text"></label>
+</div>
+<div style="margin-top:12px">
+<span style="color:var(--muted);font-size:11px;font-weight:700">Board font</span>
+<div class="seg" id="font"><button data-f="1">Font 1</button><button data-f="2">Font 2</button></div>
+</div>
+<p class="small">To update the board by itself every few minutes, a device must stay at the shop: an Android phone with <b>gold-rate-1.6-live</b>, or the PC.</p>
 </section>
 </div>
 <div class="toast" id="toast"></div>
@@ -192,7 +217,7 @@ font-size:14px; opacity:0; transition:opacity .2s; pointer-events:none;}
 /* pure rate logic (also unit-tested outside the browser) */
 var GoldCore = (function () {
 var OZ = 31.1034768, DISPLAY_MAX = 199999;
-var DEFAULTS = { duty: 15, gst: 3, goldAdj: 0, silverAdj: 0, every: 5 };
+var DEFAULTS = { duty: 15, gst: 3, goldAdj: 0, silverAdj: 0, every: 5, font: 1, row5buy: 0, row5sell: 0 };
 function compute(q, st) {
 var duty = 1 + st.duty / 100, gst = 1 + st.gst / 100;
 var g24 = q.gold * q.fx / OZ * 10 * duty + st.goldAdj;
@@ -220,7 +245,15 @@ at: j.price_as_of || j.updated_at || null };
 }
 function valid(q) { return q && q.gold > 500 && q.gold < 50000 && q.fx > 40 && q.fx < 250; }
 function inr(v) { return v == null ? '–' : '₹' + Math.round(v).toLocaleString('en-IN'); }
-return { compute: compute, fromXaus: fromXaus, valid: valid, inr: inr, DEFAULTS: DEFAULTS, DISPLAY_MAX: DISPLAY_MAX };
+function boardCommands(rows, o) {
+var bad = rows.filter(function (r) { return r.buy == null || r.buy > DISPLAY_MAX || r.sell > DISPLAY_MAX; }).map(function (r) { return r.key; });
+function build(kind, r5) {
+var v = rows.map(function (r) { return r[kind] == null ? 0 : r[kind]; }).concat([Math.min(DISPLAY_MAX, Math.max(0, Math.round(+r5 || 0)))]);
+return kind + '_font=' + (+o.font === 2 ? 2 : 1) + ';' + v.map(function (x, i) { return kind + '0' + (i + 1) + '=' + x; }).join(';');
+}
+return { ok: bad.length === 0, bad: bad, buy: build('buy', o.row5buy), sell: build('sell', o.row5sell) };
+}
+return { compute: compute, fromXaus: fromXaus, valid: valid, inr: inr, boardCommands: boardCommands, DEFAULTS: DEFAULTS, DISPLAY_MAX: DISPLAY_MAX };
 })();
 if (typeof module !== 'undefined') module.exports = GoldCore;
 </script>
@@ -295,6 +328,12 @@ $('mGold').textContent = '$' + q.gold.toFixed(2) + '/oz';
 $('mSilver').textContent = q.silver > 3 ? '$' + q.silver.toFixed(2) + '/oz' : '–';
 $('mFx').textContent = '₹' + q.fx.toFixed(2);
 $('mSrc').textContent = q.src + ' · ' + fmtTime(new Date(last.t));
+const bc = GoldCore.boardCommands(rows, st);
+window.__bc = bc;
+$('cmdBuy').textContent = bc.buy;
+$('cmdSell').textContent = bc.sell;
+$('boardWarn').textContent = bc.ok ? 'Rates from ' + fmtTime(new Date(last.t)) + ' · tap Refresh now first for the latest' : 'Cannot send: ' + bc.bad.join(', ') + ' is missing or above the board limit 1,99,999. Change it with the adjust boxes in Settings.';
+$('boardWarn').style.color = bc.ok ? '' : 'var(--red)';
 }
 
 async function refresh(manual) {
@@ -334,10 +373,11 @@ try { await navigator.clipboard.writeText(text); toast('Rates copied'); } catch 
 });
 $('refresh').addEventListener('click', () => refresh(true));
 
-const fields = ['duty', 'gst', 'goldAdj', 'silverAdj'];
+const fields = ['duty', 'gst', 'goldAdj', 'silverAdj', 'row5buy', 'row5sell'];
 function fillSettings() {
 for (const f of fields) $(f).value = st[f];
 for (const b of $('every').children) b.classList.toggle('on', +b.dataset.m === st.every);
+for (const b of $('font').children) b.classList.toggle('on', +b.dataset.f === +st.font);
 }
 for (const f of fields) {
 $(f).addEventListener('input', () => {
@@ -351,7 +391,22 @@ const b = e.target.closest('button'); if (!b) return;
 st.every = +b.dataset.m; store.save({ st, last }); fillSettings(); schedule();
 toast(st.every ? 'Auto refresh every ' + st.every + ' min' : 'Auto refresh off');
 });
-$('reset').addEventListener('click', () => { st = Object.assign({}, GoldCore.DEFAULTS); store.save({ st, last }); fillSettings(); render(false); toast('India defaults restored'); });
+$('reset').addEventListener('click', () => { st = Object.assign({}, GoldCore.DEFAULTS, { font: st.font, row5buy: st.row5buy, row5sell: st.row5sell }); store.save({ st, last }); fillSettings(); render(false); toast('India defaults restored'); });
+async function copyText(t) {
+try { await navigator.clipboard.writeText(t); return true; } catch (e) {}
+try { const ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, t.length); const ok = document.execCommand('copy'); ta.remove(); return ok; } catch (e) { return false; }
+}
+for (const [id, k] of [['copyBuy', 'buy'], ['copySell', 'sell']]) {
+$(id).addEventListener('click', async () => {
+const bc = window.__bc; if (!bc) { toast('No rates yet - tap Refresh now'); return; }
+if (!bc.ok) { toast('Fix the red warning first'); return; }
+toast((await copyText(bc[k])) ? k.toUpperCase() + ' command copied - paste it in the UDP app' : 'Copy failed - press and hold the text to copy');
+});
+}
+$('font').addEventListener('click', (e) => {
+const b = e.target.closest('button'); if (!b) return;
+st.font = +b.dataset.f; store.save({ st, last }); fillSettings(); render(false);
+});
 document.addEventListener('visibilitychange', () => {
 if (document.visibilityState === 'visible' && (!last || Date.now() - last.t > 60000)) refresh(false);
 });
