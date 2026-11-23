@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gold Rate">
+<meta name="theme-color" content="#0b0f17">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAEJUlEQVR4Xu3csW7bQBCEYTkKkMKFEcCA4QfI+6WPS6X3+6VLkyIC0iaFgRQCCIMiRS65d7ez9399xJMxnD2dFN7dPzwdgCkf+LNgDuEA4YAdzQGaA3Y0B2gO2NEcoDlgR3OA5oAdzQGaA3Y0B2gO2NEcoDlgR3OA5oAdzQGaA3Y0B2gO2NEcoDlg99H+T8bOp+P+F4G7x5e3na/JWAFjBXY0B2gO2DlsSEeeX7/YlwEHv77+cHiVdxgrYKzAjuYAzQE7mgM0B+xoDtAcsKM5QHPAjuYAzQE7mgM0B+xoDtAcsKM5QHPAjuYAzQE7/x8Yx/Hn+78Ki/n87VOFqzTBWEF/Y6VObRwO9S5UH82B/poD++Vsjmoz5aLy5arJGQ64IBzoac/RpOSbXLQ0mgM9NQe8ZGuOhvXe8NKFZAsHHKUKR/N7t/kCfKUKB3wRDnTwaSVIpQdZhguaAx00B9wlaY5QZR5qMXskCQdKSPID47+/f5b46+yQ4THOGZrD/bHO+wVc0gYZwoFC5MMR9h4Nu7D15MOBcggHkh6CBa/u4MtbRHMgaXOgKOHmkChtiUXOEQ4HSlMNh9AdKbTUEdVwoALCgVx7DrmillvwBc2BXM2BOvSaQ7SiFZetFw5UIxYOxftvILd4sXCgJsKBFJ9W5Gr5mtZboDmg3xxa99wNQm+E5oB+c6A+jeYQquI1VN6ORjjQBOGA8p5DpYRNJN4UzQHZ5pC4w7aJ/9ZoDsyK/mSf59cMj8gRRXNAds+BhmgO0BywozlAc8CO5gDNATuaAzQH7PybI/73SSmV+LMX+W7lslC+FqmjRCwu7u4fnlzew/l0nHwdIlLOXCweX95cLuo2VuYWVC7XnSudDM/mGFAhpVWIhfNYGSEihUwmw2uOjLjtOa6RD1/VCmNQMBwXRGS/+rEoO1aYMl5aJaPIhnQOFWLVMBZVm2NARNZoHos24WAjsihIMqqOFXYhi+LEomVzMGVGosUiRDiYModD0GS0HCtMmcixCNQcfU6Zmgfh2xQ/Id0g/cfdmDuMaxHDkfjQXSUWEcdK7o2IVjICbUhvmJwyWj8wk4uFQHMk2KiKxkIpHKLHIdLJ0Bgr76l8kFGPhV5zqEyZ+AcYKwX9KLtGwBbJURgD4XCEOg5JFgvhsRLtOCRlMvQ2pNbjkNL/KzNrLPI0R5ONau5YJAxHteOQHpKRaqzU2Yh0Eou0zVFoynQVi/zhcJwyHSYj81jxmjJ9xqKX5tgzZdIchG+jfUK6wcpD954LY9BdOBY3IsSi93Dc+F5mUqGnowTXaXMsbkQGfcaiuw3pDZMbkZ5jceH2NEFp1zkgGR2dc6x0Ph2JBRtSLGOsYBbhAOGAHc0BmgN2NAdoDtjRHKA5YEdzgOaAHc0BmgN2NAdoDtjRHKA5YEdzYNZ/4IRjJGNbrrQAAAAASUVORK5CYII=">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAEJUlEQVR4Xu3csW7bQBCEYTkKkMKFEcCA4QfI+6WPS6X3+6VLkyIC0iaFgRQCCIMiRS65d7ez9399xJMxnD2dFN7dPzwdgCkf+LNgDuEA4YAdzQGaA3Y0B2gO2NEcoDlgR3OA5oAdzQGaA3Y0B2gO2NEcoDlgR3OA5oAdzQGaA3Y0B2gO2NEcoDlg99H+T8bOp+P+F4G7x5e3na/JWAFjBXY0B2gO2DlsSEeeX7/YlwEHv77+cHiVdxgrYKzAjuYAzQE7mgM0B+xoDtAcsKM5QHPAjuYAzQE7mgM0B+xoDtAcsKM5QHPAjuYAzQE7/x8Yx/Hn+78Ki/n87VOFqzTBWEF/Y6VObRwO9S5UH82B/poD++Vsjmoz5aLy5arJGQ64IBzoac/RpOSbXLQ0mgM9NQe8ZGuOhvXe8NKFZAsHHKUKR/N7t/kCfKUKB3wRDnTwaSVIpQdZhguaAx00B9wlaY5QZR5qMXskCQdKSPID47+/f5b46+yQ4THOGZrD/bHO+wVc0gYZwoFC5MMR9h4Nu7D15MOBcggHkh6CBa/u4MtbRHMgaXOgKOHmkChtiUXOEQ4HSlMNh9AdKbTUEdVwoALCgVx7DrmillvwBc2BXM2BOvSaQ7SiFZetFw5UIxYOxftvILd4sXCgJsKBFJ9W5Gr5mtZboDmg3xxa99wNQm+E5oB+c6A+jeYQquI1VN6ORjjQBOGA8p5DpYRNJN4UzQHZ5pC4w7aJ/9ZoDsyK/mSf59cMj8gRRXNAds+BhmgO0BywozlAc8CO5gDNATuaAzQH7PybI/73SSmV+LMX+W7lslC+FqmjRCwu7u4fnlzew/l0nHwdIlLOXCweX95cLuo2VuYWVC7XnSudDM/mGFAhpVWIhfNYGSEihUwmw2uOjLjtOa6RD1/VCmNQMBwXRGS/+rEoO1aYMl5aJaPIhnQOFWLVMBZVm2NARNZoHos24WAjsihIMqqOFXYhi+LEomVzMGVGosUiRDiYModD0GS0HCtMmcixCNQcfU6Zmgfh2xQ/Id0g/cfdmDuMaxHDkfjQXSUWEcdK7o2IVjICbUhvmJwyWj8wk4uFQHMk2KiKxkIpHKLHIdLJ0Bgr76l8kFGPhV5zqEyZ+AcYKwX9KLtGwBbJURgD4XCEOg5JFgvhsRLtOCRlMvQ2pNbjkNL/KzNrLPI0R5ONau5YJAxHteOQHpKRaqzU2Yh0Eou0zVFoynQVi/zhcJwyHSYj81jxmjJ9xqKX5tgzZdIchG+jfUK6wcpD954LY9BdOBY3IsSi93Dc+F5mUqGnowTXaXMsbkQGfcaiuw3pDZMbkZ5jceH2NEFp1zkgGR2dc6x0Ph2JBRtSLGOsYBbhAOGAHc0BmgN2NAdoDtjRHKA5YEdzgOaAHc0BmgN2NAdoDtjRHKA5YEdzYNZ/4IRjJGNbrrQAAAAASUVORK5CYII=">
+<title>Gold Rate · Kareem Tech</title>
+<style>
+/* VOICE  shop counter tool: quick, exact, readable at arm's length
+IDEA   the rate board on the shop wall, in the Kareem Tech app style
+PICTURE the 24K BUY / SELL figures large in the first card
+COLOUR Kareem Tech night palette: ink #0b0f17, cards #141b28, gold amber #f7931a, blue, green/red for moves
+TYPE   system UI for words, monospace digits for every rupee figure */
+:root{
+--bg:#0b0f17; --card:#141b28; --cardhi:#1b2434; --line:#243040;
+--fg:#e9eef5; --muted:#8795a8; --amber:#f7931a; --amberhi:#ffa838;
+--blue:#4aa8ff; --bluehi:#6bbaff; --green:#3fcf8e; --red:#ff6b6b;
+--slate:#2a3545; --slatehi:#36465c;
+}
+*{box-sizing:border-box; min-width:0; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0; background:var(--bg); color:var(--fg);
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+-webkit-text-size-adjust:100%;}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); overflow-x:clip;}
+.wrap{max-width:720px; margin:0 auto; padding:14px;}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-variant-numeric:tabular-nums;}
+
+header{display:flex; align-items:center; gap:12px; padding:8px 2px 14px;}
+.logo{width:42px; height:46px; flex:0 0 auto;}
+h1{font-size:20px; margin:0; line-height:1.1;}
+header .sub{color:var(--muted); font-size:12px; margin-top:2px;}
+.badge{margin-left:auto; display:flex; align-items:center; gap:6px; white-space:nowrap;
+background:#10233f; border:1px solid var(--line); border-radius:10px;
+padding:6px 10px; font-size:11px; color:var(--muted); font-weight:700;}
+.dot{width:8px; height:8px; border-radius:50%; background:var(--slatehi);}
+.dot.live{background:var(--green); animation:pulse 2s infinite;}
+.dot.bad{background:var(--red);}
+@keyframes pulse{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.dot.live{animation:none}}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px;
+padding:14px; margin-bottom:14px; position:relative; overflow:hidden;}
+.card::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px;}
+.card.amber::before{background:var(--amber);} .card.blue::before{background:var(--blue);}
+.card.green::before{background:var(--green);} .card.slate::before{background:var(--slate);}
+.card h2{font-size:13px; margin:0 0 2px;}
+.card .hint{color:var(--muted); font-size:12px; margin:0 0 10px;}
+
+/* hero: 24K board */
+.hero .k{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
+.hero .k b{font-size:22px; color:var(--amber);}
+.hero .k span{color:var(--muted); font-size:13px;}
+.pair{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px; margin-top:12px;}
+.big{background:#0c121c; border:1px solid var(--line); border-radius:12px; padding:12px;}
+.big .lbl{color:var(--muted); font-size:11px; font-weight:700;}
+.big .val{font-size:clamp(26px,8.5vw,44px); font-weight:800; line-height:1.1; margin-top:4px; white-space:nowrap;}
+.big.sell .val{color:var(--amberhi);}
+.big .chg{font-size:12px; margin-top:4px; color:var(--muted); white-space:nowrap;}
+.up{color:var(--green)!important;} .down{color:var(--red)!important;}
+.flash{animation:fl 1.2s ease-out;}
+@keyframes fl{from{background:#2a2410}to{background:#0c121c}}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}}
+
+/* rate list */
+.rows{display:grid; gap:8px;}
+.row{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr); gap:8px; align-items:center;
+background:#0c121c; border:1px solid var(--line); border-radius:10px; padding:10px;}
+.row.head{background:none; border:0; padding:0 10px; color:var(--muted); font-size:11px; font-weight:700;}
+.row .name b{display:block; font-size:15px;}
+.row .name span{color:var(--muted); font-size:11px;}
+.row .n{text-align:right; font-size:15px; font-weight:700; white-space:nowrap;}
+.row .n small{display:block; color:var(--muted); font-size:11px; font-weight:400;}
+.row .n.sell{color:var(--amberhi);}
+.row.head .n{font-size:11px; font-weight:700; color:var(--muted);}
+.warnchip{display:inline-block; margin-top:3px; font-size:10px; color:var(--amber); border:1px solid #5a3a10; border-radius:6px; padding:1px 5px;}
+
+.kv{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px;}
+.kv div{background:var(--cardhi); border:1px solid var(--line); border-radius:10px; padding:8px 10px;}
+.kv .l{color:var(--muted); font-size:11px; font-weight:700;}
+.kv .v{font-size:15px; font-weight:700; margin-top:2px; white-space:nowrap;}
+.status{font-size:12px; margin-top:10px; color:var(--muted);}
+.status.bad{color:var(--red);}
+
+.btns{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px;}
+.btn{border:0; border-radius:12px; font-weight:700; font-size:15px; min-height:46px;
+padding:12px 18px; cursor:pointer; color:#0b0f17; font-family:inherit;}
+.btn:focus-visible, input:focus-visible{outline:2px solid var(--bluehi); outline-offset:2px;}
+.btn.amber{background:var(--amber);} .btn.amber:active{background:var(--amberhi);}
+.btn.blue{background:var(--blue);} .btn.blue:active{background:var(--bluehi);}
+.btn.slate{background:var(--slate); color:var(--fg);} .btn.slate:active{background:var(--slatehi);}
+.btn.grow{flex:1 1 140px;}
+.btn[disabled]{opacity:.6;}
+
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;}
+label.f{display:block; color:var(--muted); font-size:11px; font-weight:700;}
+label.f input{display:block; width:100%; margin-top:6px; background:#0c121c; color:var(--fg);
+border:1px solid var(--line); border-radius:10px; padding:10px; font-size:16px;
+font-family:ui-monospace,Menlo,Consolas,monospace; outline:none;}
+label.f input:focus{border-color:var(--blue);}
+.seg{display:flex; background:var(--line); border-radius:9px; overflow:hidden; margin-top:6px; flex-wrap:wrap;}
+.seg button{flex:1; border:0; background:var(--cardhi); color:var(--muted); min-height:44px;
+font-weight:700; font-size:13px; padding:8px 10px; cursor:pointer; font-family:inherit;}
+.seg button.on{background:var(--blue); color:#0b0f17;}
+.small{color:var(--muted); font-size:12px; line-height:1.5; margin:8px 0 0;}
+.toast{position:fixed; left:50%; bottom:calc(18px + env(safe-area-inset-bottom)); transform:translateX(-50%);
+background:var(--cardhi); border:1px solid var(--line); border-radius:12px; padding:10px 16px;
+font-size:14px; opacity:0; transition:opacity .2s; pointer-events:none;}
+.toast.on{opacity:1;}
+@media (max-width:380px){ .row{grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+.row .name{grid-column:1 / -1;} .row.head .name{display:none;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<svg class="logo" viewBox="0 0 44 48" aria-hidden="true">
+<polygon points="2,6 42,6 42,34 22,46 2,34" fill="#10233f" stroke="#f7931a" stroke-width="2"/>
+<polygon points="11,30 33,30 29,20 15,20" fill="#f7931a"/>
+<polygon points="15,20 29,20 27,14 17,14" fill="#ffa838"/>
+</svg>
+<div>
+<h1>Gold Rate</h1>
+<div class="sub">Live India rate · BUY &amp; SELL</div>
+</div>
+<div class="badge" id="badge"><span class="dot" id="dot"></span><span id="badgeTxt">loading</span></div>
+</header>
+
+<section class="card amber hero" aria-live="polite">
+<div class="k"><b>24K Gold</b><span>999 · per 10 g</span></div>
+<div class="pair">
+<div class="big" id="b24"><div class="lbl">BUY</div><div class="val mono" id="buy24">–</div><div class="chg mono" id="chgBuy">&nbsp;</div></div>
+<div class="big sell" id="s24"><div class="lbl">SELL · incl. GST</div><div class="val mono" id="sell24">–</div><div class="chg mono" id="chgSell">&nbsp;</div></div>
+</div>
+<div class="status" id="status">Fetching live rate…</div>
+</section>
+
+<div class="btns">
+<button class="btn amber grow" id="refresh">Refresh now</button>
+<button class="btn blue grow" id="share">Share rates</button>
+</div>
+
+<section class="card blue">
+<h2>All rates</h2>
+<p class="hint" id="rowsHint">BUY = rate · SELL = rate + GST</p>
+<div class="rows" id="rows"></div>
+</section>
+
+<section class="card green">
+<h2>Market</h2>
+<p class="hint">International spot, converted at today's USD/INR</p>
+<div class="kv">
+<div><div class="l">Gold spot</div><div class="v mono" id="mGold">–</div></div>
+<div><div class="l">Silver spot</div><div class="v mono" id="mSilver">–</div></div>
+<div><div class="l">USD / INR</div><div class="v mono" id="mFx">–</div></div>
+<div><div class="l">Source · updated</div><div class="v" id="mSrc" style="font-size:13px">–</div></div>
+</div>
+</section>
+
+<section class="card slate">
+<h2>Settings</h2>
+<p class="hint">Saved on this phone</p>
+<div class="grid2">
+<label class="f">Import duty %<input id="duty" inputmode="decimal" type="text"></label>
+<label class="f">GST % on SELL<input id="gst" inputmode="decimal" type="text"></label>
+<label class="f">Gold adjust ₹ per 10 g (24K)<input id="goldAdj" inputmode="decimal" type="text"></label>
+<label class="f">Silver adjust ₹ per kg<input id="silverAdj" inputmode="decimal" type="text"></label>
+</div>
+<div style="margin-top:12px">
+<span class="f" style="color:var(--muted);font-size:11px;font-weight:700">Auto refresh</span>
+<div class="seg" id="every">
+<button data-m="1">1 min</button><button data-m="2">2 min</button><button data-m="5">5 min</button><button data-m="10">10 min</button><button data-m="0">Off</button>
+</div>
+</div>
+<div class="btns" style="margin:12px 0 0"><button class="btn slate" id="reset">Reset to India defaults</button></div>
+<p class="small">Rate = spot × USD/INR, converted to 10 g or 1 kg, plus import duty (India: 15% since 13 May 2026 — 10% basic customs + 5% AIDC). 22K = 91.6% and 18K = 75% of 24K. Use the adjust boxes to match your local market (IBJA / bullion dealer).</p>
+</section>
+
+<section class="card slate">
+<h2>Shop display</h2>
+<p class="small" style="margin-top:4px">iPhone Safari can't send the display's Wi-Fi (UDP) commands, so this page only shows the rates. To push them to the display use <b>CHECK-GOLD-DISPLAY.bat</b> on the PC or the Android app <b>gold-rate-1.6-live</b> — both use these same numbers. Display rows: 1 = 24K, 2 = 22K, 3 = 18K, 4 = Silver/kg (max 1,99,999).</p>
+</section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script id="core">
+/* pure rate logic (also unit-tested outside the browser) */
+var GoldCore = (function () {
+var OZ = 31.1034768, DISPLAY_MAX = 199999;
+var DEFAULTS = { duty: 15, gst: 3, goldAdj: 0, silverAdj: 0, every: 5 };
+function compute(q, st) {
+var duty = 1 + st.duty / 100, gst = 1 + st.gst / 100;
+var g24 = q.gold * q.fx / OZ * 10 * duty + st.goldAdj;
+var silver = q.silver > 3 ? q.silver * q.fx / OZ * 1000 * duty + st.silverAdj : NaN;
+var defs = [
+{ key: '24K', sub: '999 · per 10 g', base: g24, gram: g24 / 10 },
+{ key: '22K', sub: '916 · per 10 g', base: g24 * 0.916, gram: g24 * 0.916 / 10 },
+{ key: '18K', sub: '750 · per 10 g', base: g24 * 0.75, gram: g24 * 0.75 / 10 },
+{ key: 'Silver', sub: '999 · per kg', base: silver, gram: silver / 1000 }
+];
+return defs.map(function (d) {
+var ok = isFinite(d.base) && d.base > 0;
+var buy = ok ? Math.round(d.base) : null, sell = ok ? Math.round(d.base * gst) : null;
+return { key: d.key, sub: d.sub, buy: buy, sell: sell,
+gramBuy: ok ? d.gram : null, gramSell: ok ? d.gram * gst : null,
+overDisplay: ok && sell > DISPLAY_MAX };
+});
+}
+function fromXaus(j) {
+var gold = +j.spot_usd_oz, silver = +j.silver_usd_oz;
+var fx = j.xau && +j.xau.price ? +j.xau.price / gold : NaN;
+if (!(fx > 40 && fx < 250)) fx = +j.fx_rate;
+return { gold: gold, silver: silver, fx: fx, src: 'xaus.com' + (j.stale ? ' (stale)' : ''),
+at: j.price_as_of || j.updated_at || null };
+}
+function valid(q) { return q && q.gold > 500 && q.gold < 50000 && q.fx > 40 && q.fx < 250; }
+function inr(v) { return v == null ? '–' : '₹' + Math.round(v).toLocaleString('en-IN'); }
+return { compute: compute, fromXaus: fromXaus, valid: valid, inr: inr, DEFAULTS: DEFAULTS, DISPLAY_MAX: DISPLAY_MAX };
+})();
+if (typeof module !== 'undefined') module.exports = GoldCore;
+</script>
+<script>
+{
+const $ = (id) => document.getElementById(id);
+const XAUS = 'https://xaus.com/api/v1/spot?currency=INR&compact=1';
+const GA = 'https://api.gold-api.com/price/';
+const FX = ['https://open.er-api.com/v6/latest/USD', 'https://api.frankfurter.dev/v1/latest?base=USD&symbols=INR'];
+const KEY = 'goldrate.v1';
+let st = Object.assign({}, GoldCore.DEFAULTS), last = null, prev24 = null, timer = null, busy = false;
+
+const store = {
+load() { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; } },
+save(o) { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
+};
+const saved = store.load();
+if (saved.st) st = Object.assign(st, saved.st);
+if (saved.last) last = saved.last;
+
+async function getJSON(u) {
+const c = new AbortController(); const t = setTimeout(() => c.abort(), 12000);
+try {
+const r = await fetch(u, { cache: 'no-store', signal: c.signal });
+if (!r.ok) throw new Error(new URL(u).host + ' ' + r.status);
+return await r.json();
+} finally { clearTimeout(t); }
+}
+async function fetchQuote() {
+let err1 = '';
+try {
+const q = GoldCore.fromXaus(await getJSON(XAUS));
+if (!(q.silver > 3)) { try { q.silver = +(await getJSON(GA + 'XAG')).price; } catch (e) {} }
+if (GoldCore.valid(q)) return q;
+err1 = 'xaus.com bad data';
+} catch (e) { err1 = e.message || 'xaus.com failed'; }
+const gold = +(await getJSON(GA + 'XAU')).price;
+let silver = NaN; try { silver = +(await getJSON(GA + 'XAG')).price; } catch (e) {}
+let fx = NaN;
+for (const u of FX) { try { fx = +(await getJSON(u)).rates.INR; if (fx > 40 && fx < 250) break; } catch (e) {} }
+const q = { gold, silver, fx, src: 'gold-api.com', at: null };
+if (!GoldCore.valid(q)) throw new Error('rate sources failed (' + err1 + ')');
+return q;
+}
+
+function fmtTime(d) { return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); }
+function setBadge(kind, text) { $('dot').className = 'dot ' + kind; $('badgeTxt').textContent = text; }
+function chg(el, now, before) {
+if (before == null || now == null) { el.innerHTML = '&nbsp;'; el.className = 'chg mono'; return; }
+const d = now - before;
+el.textContent = d === 0 ? 'no change' : (d > 0 ? '▲ ' : '▼ ') + GoldCore.inr(Math.abs(d)).replace('₹', '₹ ');
+el.className = 'chg mono' + (d > 0 ? ' up' : d < 0 ? ' down' : '');
+}
+
+function render(flash) {
+if (!last) return;
+const rows = GoldCore.compute(last.q, st);
+const r24 = rows[0];
+$('buy24').textContent = GoldCore.inr(r24.buy);
+$('sell24').textContent = GoldCore.inr(r24.sell);
+chg($('chgBuy'), r24.buy, prev24 && prev24.buy);
+chg($('chgSell'), r24.sell, prev24 && prev24.sell);
+if (flash) { for (const id of ['b24', 's24']) { const e = $(id); e.classList.remove('flash'); void e.offsetWidth; e.classList.add('flash'); } }
+$('rowsHint').textContent = 'BUY = rate · SELL = rate + ' + st.gst + '% GST · duty ' + st.duty + '%';
+$('rows').innerHTML = '<div class="row head"><div class="name">Metal</div><div class="n">BUY</div><div class="n">SELL</div></div>' +
+rows.map(r => '<div class="row"><div class="name"><b>' + r.key + '</b><span>' + r.sub + '</span>' +
+(r.overDisplay ? '<br><span class="warnchip">above display max 1,99,999</span>' : '') + '</div>' +
+'<div class="n mono">' + GoldCore.inr(r.buy) + '<small>' + (r.gramBuy ? GoldCore.inr(r.gramBuy) + '/g' : '') + '</small></div>' +
+'<div class="n mono sell">' + GoldCore.inr(r.sell) + '<small>' + (r.gramSell ? GoldCore.inr(r.gramSell) + '/g' : '') + '</small></div></div>').join('');
+const q = last.q;
+$('mGold').textContent = '$' + q.gold.toFixed(2) + '/oz';
+$('mSilver').textContent = q.silver > 3 ? '$' + q.silver.toFixed(2) + '/oz' : '–';
+$('mFx').textContent = '₹' + q.fx.toFixed(2);
+$('mSrc').textContent = q.src + ' · ' + fmtTime(new Date(last.t));
+}
+
+async function refresh(manual) {
+if (busy) return; busy = true; $('refresh').disabled = true;
+setBadge('', 'updating'); $('status').className = 'status'; $('status').textContent = 'Fetching live rate…';
+try {
+const q = await fetchQuote();
+if (last) { const r0 = GoldCore.compute(last.q, st)[0]; prev24 = { buy: r0.buy, sell: r0.sell }; }
+last = { q, t: Date.now() };
+store.save({ st, last });
+render(true);
+setBadge('live', 'live ' + fmtTime(new Date()));
+$('status').textContent = 'Updated ' + fmtTime(new Date()) + (st.every ? ' · next in ' + st.every + ' min' : ' · auto refresh off');
+if (manual) toast('Rates updated');
+} catch (e) {
+setBadge('bad', 'offline');
+$('status').className = 'status bad';
+$('status').textContent = 'Could not get live rate: ' + (e.message || e) + (last ? ' — showing ' + fmtTime(new Date(last.t)) + ' rates' : '');
+} finally { busy = false; $('refresh').disabled = false; schedule(); }
+}
+function schedule() { clearTimeout(timer); if (st.every > 0) timer = setTimeout(() => refresh(false), st.every * 60000); }
+
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 1800); }
+
+function shareText() {
+if (!last) return '';
+const rows = GoldCore.compute(last.q, st);
+const d = new Date(last.t);
+return 'Gold rate ' + d.toLocaleDateString('en-IN') + ' ' + fmtTime(d) + '\n' +
+rows.map(r => r.key + ' (' + r.sub + '): BUY ' + GoldCore.inr(r.buy) + ' | SELL ' + GoldCore.inr(r.sell)).join('\n') +
+'\nSELL incl. ' + st.gst + '% GST';
+}
+$('share').addEventListener('click', async () => {
+const text = shareText(); if (!text) { toast('No rates yet'); return; }
+try { if (navigator.share) { await navigator.share({ text }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+try { await navigator.clipboard.writeText(text); toast('Rates copied'); } catch (e) { toast('Could not share'); }
+});
+$('refresh').addEventListener('click', () => refresh(true));
+
+const fields = ['duty', 'gst', 'goldAdj', 'silverAdj'];
+function fillSettings() {
+for (const f of fields) $(f).value = st[f];
+for (const b of $('every').children) b.classList.toggle('on', +b.dataset.m === st.every);
+}
+for (const f of fields) {
+$(f).addEventListener('input', () => {
+const v = parseFloat($(f).value.replace(',', '.'));
+st[f] = isFinite(v) ? v : GoldCore.DEFAULTS[f];
+store.save({ st, last }); render(false);
+});
+}
+$('every').addEventListener('click', (e) => {
+const b = e.target.closest('button'); if (!b) return;
+st.every = +b.dataset.m; store.save({ st, last }); fillSettings(); schedule();
+toast(st.every ? 'Auto refresh every ' + st.every + ' min' : 'Auto refresh off');
+});
+$('reset').addEventListener('click', () => { st = Object.assign({}, GoldCore.DEFAULTS); store.save({ st, last }); fillSettings(); render(false); toast('India defaults restored'); });
+document.addEventListener('visibilitychange', () => {
+if (document.visibilityState === 'visible' && (!last || Date.now() - last.t > 60000)) refresh(false);
+});
+
+fillSettings();
+if (last) { render(false); setBadge('', 'saved ' + fmtTime(new Date(last.t))); }
+refresh(false);
+}
+</script>
+</body>
+</html>
